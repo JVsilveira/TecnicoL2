@@ -1,11 +1,12 @@
 import { describe, it, expect } from "vitest";
 
 import {
-  Product,
+  Dimension,
   Box,
-  smallestRotationByLength,
-  smallestBoxPossible,
-  boxCanContain,
+  Product,
+  lowestRotationByLength,
+  smallestPossibleBox,
+  boxHolds,
   pack,
 } from "./packing.js";
 
@@ -23,21 +24,21 @@ describe("Classe Dimensao", () => {
   });
 });
 
-describe("smallestRotationByLength", () => {
+describe("lowestRotationByLength", () => {
   it("deve escolher a menor dimensão como comprimento", () => {
     const product = new Product(40, 10, 25);
 
-    const rotation = smallestRotationByLength(product);
+    const rotation = lowestRotationByLength(product);
 
     expect(rotation.len).toBe(10);
   });
 });
 
-describe("smallestBoxPossible", () => {
+describe("smallestPossibleBox", () => {
   it("deve calcular corretamente a menor caixa necessária", () => {
     const products = [new Product(10, 10, 10), new Product(20, 20, 20)];
 
-    const box = smallestBoxPossible(products);
+    const box = smallestPossibleBox(products);
 
     expect(box.height).toBe(20);
     expect(box.width).toBe(20);
@@ -63,7 +64,7 @@ describe("boxHolds", () => {
 
 describe("pack", () => {
   it("deve escolher a menor caixa disponível", () => {
-    const caixas = [
+    const boxes = [
       new Box(30, 40, 80, "Caixa 1"),
       new Box(80, 50, 40, "Caixa 2"),
       new Box(50, 80, 60, "Caixa 3"),
@@ -77,7 +78,7 @@ describe("pack", () => {
       new Product(30, 15, 10, "Call of Duty - Cold War"),
     ];
 
-    const result = pack(products, caixas);
+    const result = pack(products, boxes);
 
     expect(result.idealBox.type).toBe("Caixa 1");
   });
@@ -96,9 +97,9 @@ describe("pack", () => {
 
     const result = pack(products, boxes);
 
-    expect(result.necessaryBox.height).toBe(20);
-    expect(result.necessaryBox.width).toBe(30);
-    expect(result.necessaryBox.len).toBe(20);
+    expect(result.boxNecessary.height).toBe(20);
+    expect(result.boxNecessary.width).toBe(30);
+    expect(result.boxNecessary.len).toBe(20);
 
     expect(result.idealBox.type).toBe("Caixa 1");
   });
