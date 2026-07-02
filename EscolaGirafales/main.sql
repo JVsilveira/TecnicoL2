@@ -5,11 +5,12 @@ SELECT
     p.nomeprof,
     SUM(h.numhoras) AS total_horas
 FROM professor p
-JOIN horario h
-    ON p.codprof = h.codprof
-GROUP BY
-    p.codprof,
-    p.nomeprof;
+JOIN profturma pt ON p.codprof = pt.codprof
+JOIN horario h ON pt.coddepto = h.coddepto
+    AND pt.numdisc = h.numdisc
+    AND pt.anosem = h.anosem
+    AND pt.siglatur = h.siglatur
+GROUP BY p.codprof, p.nomeprof;
 
 // Lista de salas com horários livres e ocupados - Pode usar SQL e a linguagem de programação que achar melhor.
 
@@ -23,6 +24,5 @@ SELECT
         ELSE 'Ocupada'
     END AS status_sala
 FROM sala s
-LEFT JOIN horario h
-    ON s.codpredio = h.codpredio
-   AND s.numsala = h.numsala;
+LEFT JOIN horario h ON s.codpredio = h.codpredio
+    AND s.numsala = h.numsala;
